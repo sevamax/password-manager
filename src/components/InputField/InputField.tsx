@@ -16,6 +16,7 @@ const InputField: React.FC<PasswordItemProps> = ({text, name, handleTextInput, h
 
   return (
     <InputFieldContainer>
+      <h1>Dashboard</h1>
       <form 
         method='GET' 
         action='' 

@@ -32,4 +32,5 @@ export type UserState = {
   id: string | null,
   token: string | null,
   email: string | null,
+  passwords: PasswordsState,
 }
