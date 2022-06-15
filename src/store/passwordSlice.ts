@@ -12,7 +12,7 @@ const passwordSlice = createSlice({
   reducers: {
     addPassword(state, action: PayloadAction<AddPassword>) {
       const {text, name} = action.payload;
-      if(name.trim() && name.trim()) {
+      if(name.trim() && text.trim()) {
         state.list.push({
           id: new Date().toISOString(),
           name,

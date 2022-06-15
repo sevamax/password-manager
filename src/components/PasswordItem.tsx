@@ -1,7 +1,7 @@
 import { removePassword, changeIsEdit, editPass } from "../store/passwordSlice";
 import { useAppDispatch } from '../hock';
 import { useState, useRef } from 'react';
-import { addFocus, removeFocus } from '../functions/Focus.js';
+import { addFocus, removeFocus } from '../functions/Focus';
 import { toggleShowPassword } from '../functions/Password';
 
 interface PasswordItemProps {
@@ -14,8 +14,8 @@ interface PasswordItemProps {
 const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) => {
   const [isPassShow, setIsPassShow] = useState(false);
 
-  const inputPasswordEditorWrapper = useRef<HTMLDivElement>(null);
-  const inputPasswordEditor = useRef<HTMLInputElement>(null);
+  const inputPasswordEditorWrapper = useRef<HTMLDivElement | null>(null);
+  const inputPasswordEditor = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
   const tempPass = 'asdasd';
