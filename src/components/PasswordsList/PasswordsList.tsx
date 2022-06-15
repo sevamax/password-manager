@@ -8,7 +8,7 @@ const PasswordsList = () => {
 
   return (
     <PasswordsListContainer>
-      <h2> devices/accounts</h2>
+      <h2>{passwords.length} devices/accounts</h2>
       <ul className='password-list'>
         {
           passwords && passwords.map((password) => (
