@@ -1,5 +1,5 @@
-import { useAppSelector } from '../../hock';
-import PasswordItem from '../PasswordItem';
+import useAppSelector from '../../hooks/useAppSelector';
+import PasswordItem from '../PasswordItem/PasswordItem';
 import { PasswordsListContainer } from './styledComponent/PasswordsListContainer';
 
 const PasswordsList = () => {

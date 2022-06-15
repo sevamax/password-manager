@@ -1,8 +1,8 @@
-import { removePassword, changeIsEdit, editPass } from "../store/passwordSlice";
-import { useAppDispatch } from '../hock';
+import { removePassword, changeIsEdit, editPass } from "../../store/passwordSlice";
+import useAppDispatch  from '../../hooks/useAppDispatch';
 import { useState, useRef } from 'react';
-import { addFocus, removeFocus } from '../functions/Focus';
-import { toggleShowPassword } from '../functions/Password';
+import { addFocus, removeFocus } from '../../functions/focus';
+import { toggleShowPassword } from '../../functions/password';
 
 interface PasswordItemProps {
   id: string,

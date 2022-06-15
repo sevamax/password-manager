@@ -1,7 +1,7 @@
 import {InputFieldContainer} from './styledComponent/InputFieldContainer'
 import { useRef } from 'react';
-import { addFocus, removeFocus } from '../../functions/Focus';
-// import { addPassword } from '../../store/passwordSlice';
+import { addFocus, removeFocus } from '../../functions/focus';
+
 interface PasswordItemProps {
   text: string,
   name: string,

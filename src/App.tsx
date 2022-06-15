@@ -1,32 +1,22 @@
 import { useState } from 'react'
 import './App.css'
-import PasswordsList from './components/PasswordsList/PasswordsList';
-import InputField from './components/InpurField/InputField';
 import { useDispatch } from 'react-redux';
-import { addPassword } from './store/passwordSlice';
+import { Routes, Route, Link } from 'react-router-dom'
+import DashboardPage from './pages/DashboardPage/DashboardPage'
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import NotFoundPage from './pages/NotFoundPage/NotFoundPage';
 
 function App() {
-  const [text, setText] = useState('');
-  const [name, setName] = useState('');
-  
-  const dispatch = useDispatch();
 
   return (
     <div className="App">
-      <InputField 
-        text={text}
-        name={name}
-        handleTextInput={setText}
-        handleNameInput={setName}
-        handleSubmit={() => { 
-          dispatch(addPassword({text, name}));
-          if (text.trim() && name.trim()) {
-            setText('');
-            setName('');
-          }
-        }}
-      />
-      <PasswordsList />
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </div>
   )
 }
