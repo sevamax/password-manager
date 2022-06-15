@@ -1,9 +1,26 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { PasswordsState, RemovePassword, ChangeIsEdit, EditPass, AddPassword }  from '../type';
+import { db } from '../firebase';
+import { collection, getDocs  } from "firebase/firestore"; 
 
+
+export const fetchPasswords: any = createAsyncThunk(
+  'passwords/fetchPasswords',
+  async function(userId: string) {
+    if (userId) {
+      const responce = await getDocs(collection(db, userId));
+      let passwordList: any[] = [];
+      responce.forEach((doc) => {
+        passwordList.push({id: doc.id, ...doc.data()});
+      });
+      return passwordList;
+    }
+  })
 
 const initialState: PasswordsState = {
   list: [],
+  status: null,
+  error: null,
 }
 
 const passwordSlice = createSlice({
@@ -11,12 +28,12 @@ const passwordSlice = createSlice({
   initialState,
   reducers: {
     addPassword(state, action: PayloadAction<AddPassword>) {
-      const {text, name} = action.payload;
-      if(name.trim() && text.trim()) {
+      const {password, name} = action.payload;
+      if(name.trim() && password.trim()) {
         state.list.push({
           id: new Date().toISOString(),
           name,
-          text,
+          password,
           isEditing: false,
         })
       }
@@ -31,7 +48,7 @@ const passwordSlice = createSlice({
         changedIsEditPassword.isEditing = !changedIsEditPassword.isEditing;
       }
       if (action.payload.tempPass && changedIsEditPassword) {
-        changedIsEditPassword.text = action.payload.tempPass;
+        changedIsEditPassword.password = action.payload.tempPass;
       }
     },
     editPass(state, action: PayloadAction<EditPass>) {
@@ -39,12 +56,29 @@ const passwordSlice = createSlice({
       const editedText = state.list.find(password => password.id === id);
 
       if (editedText) {
-        editedText.text = newText;
+        editedText.password = newText;
       }
     },
+  },
+  extraReducers: {
+    [fetchPasswords.pending]: (state) => {
+      state.status = 'loading';
+      state.error = null;
+    },
+    [fetchPasswords.fulfilled]: (state, action) => {
+      state.status = 'resolved';
+      if(action.payload) {
+        state.list = action.payload;
+      }
+
+    },
+    [fetchPasswords.rejecred]: (state, action) => {
+      state.status = 'rejecred';
+      // state.list = action.payload;
+    }
   }
 });
 
-export const {addPassword, removePassword, changeIsEdit, editPass} = passwordSlice.actions;
+export const {addPassword, removePassword, changeIsEdit, editPass } = passwordSlice.actions;
 
 export default passwordSlice.reducer;

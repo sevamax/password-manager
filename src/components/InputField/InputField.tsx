@@ -1,16 +1,17 @@
 import {InputFieldContainer} from './styledComponent/InputFieldContainer'
 import { useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
+import { useAuth } from 'hooks/useAuth';
 
 interface PasswordItemProps {
-  text: string,
+  password: string,
   name: string,
   handleTextInput: (str: string) => void,
   handleNameInput: (str: string) => void,
   handleSubmit: any,
 };
 
-const InputField: React.FC<PasswordItemProps> = ({text, name, handleTextInput, handleNameInput, handleSubmit}) => {
+const InputField: React.FC<PasswordItemProps> = ({password, name, handleTextInput, handleNameInput, handleSubmit}) => {
   const inputNameWrapper = useRef<HTMLDivElement | null>(null);
   const inputPasswordWrapper = useRef<HTMLDivElement | null>(null);
 
@@ -42,7 +43,7 @@ const InputField: React.FC<PasswordItemProps> = ({text, name, handleTextInput, h
             <input 
               id="password"
               type="password"
-              value={text} 
+              value={password} 
               onChange={(e) => handleTextInput(e.target.value)}
               onFocus={() => addFocus(inputPasswordWrapper)}
               onBlur={() => removeFocus(inputPasswordWrapper)}

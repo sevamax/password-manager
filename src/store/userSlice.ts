@@ -7,9 +7,6 @@ const initialState: UserState = {
   id: null,
   token: null,
   email: null,
-  passwords:  {
-    list: [],
-  },
 }
 
 const userSlice = createSlice({

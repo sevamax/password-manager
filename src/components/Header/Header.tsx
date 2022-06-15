@@ -16,7 +16,7 @@ const
       <button
         onClick={() => { 
           dispatch(removeUser())
-          passwords.map((pass) => {
+          passwords && passwords.map((pass) => {
             dispatch(removePassword(pass));
           })
         }}

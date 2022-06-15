@@ -1,7 +1,8 @@
 import { Form } from "../Form/Form";
 import useAppDispatch from '../../hooks/useAppDispatch';
 import {setUser} from '../../store/userSlice';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {createUserWithEmailAndPassword} from 'firebase/auth';
+import { auth } from "../../firebase";
 import { useNavigate  } from "react-router-dom";
 import { useAuth } from '../../hooks/useAuth';
 import { Navigate } from 'react-router-dom';
@@ -12,7 +13,6 @@ const SignUp = (): JSX.Element => {
   const {isAuth} = useAuth();
 
   const handleRegister = (email: string, password: string): void => {
-    const auth = getAuth();
     createUserWithEmailAndPassword(auth, email, password)
       .then(({user}) => {
         dispatch(setUser({

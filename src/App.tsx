@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import './App.css'
-import { useDispatch } from 'react-redux';
 import { Routes, Route, Link } from 'react-router-dom'
 import DashboardPage from './pages/DashboardPage/DashboardPage'
 import RegisterPage from './pages/RegisterPage/RegisterPage';

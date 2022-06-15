@@ -3,15 +3,18 @@ import useAppDispatch  from '../../hooks/useAppDispatch';
 import { useState, useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
 import { toggleShowPassword } from '../../functions/password';
+import { doc, setDoc, addDoc, collection, getDocs  } from "firebase/firestore"; 
+import { db } from '../../firebase';
+import { useAuth } from '../../hooks/useAuth';
 
 interface PasswordItemProps {
   id: string,
-  text: string,
+  password: string,
   name: string,
   isEditing: boolean,
 };
 
-const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) => {
+const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditing}) => {
   const [isPassShow, setIsPassShow] = useState(false);
 
   const inputPasswordEditorWrapper = useRef<HTMLDivElement | null>(null);
@@ -19,6 +22,7 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) 
 
   const dispatch = useAppDispatch();
   const tempPass = 'asdasd';
+  const userID = useAuth().id;
 
   return (
     <li className="pasman__item">
@@ -34,9 +38,10 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) 
                 <div ref={inputPasswordEditorWrapper} className="input-wrapper input-wrapper--password">
                   <input 
                     className='pasman__password' 
-                    value={text}
+                    value={password}
                     ref={inputPasswordEditor}
-                    onChange={(e) => dispatch(editPass({id, newText: e.target.value}))}
+                    onChange={(e) => dispatch(editPass({id, newText: e.target.value}))
+                    }
                     onFocus={() => addFocus(inputPasswordEditorWrapper)}
                     onBlur={() => removeFocus(inputPasswordEditorWrapper)}   
                   />
@@ -46,7 +51,7 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) 
                 <div className="input-wrapper input-wrapper--password">
                   <input 
                     className='pasman__password' 
-                    value={text} 
+                    value={password} 
                     type={toggleShowPassword(isPassShow)} 
                     disabled
                   />
@@ -67,13 +72,34 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) 
           isEditing 
             ?  (
                 <>
-                  <button style={{color: 'green'}} onClick={() => dispatch(changeIsEdit({id}))}>&#43;</button>
-                  <button style={{color: 'red'}} onClick={() => dispatch(changeIsEdit({id, tempPass}))}>&times;</button>
+                  {/* Submit new password button */}
+                  <button 
+                    style={{color: 'green'}} 
+                    onClick={async() => {
+                      dispatch(changeIsEdit({id}))
+                        if(userID) {
+                          await setDoc(doc(db, userID, id), {
+                            id: new Date().toISOString(),
+                            name,
+                            password,
+                            isEditing: false,
+                          });
+                      }
+                    }}>
+                        &#43;
+                    </button>
+                  <button 
+                    style={{color: 'red'}} 
+                    onClick={() => {
+                      dispatch(changeIsEdit({id, tempPass}))
+                    }}>
+                      &times;
+                    </button>
                 </>
               )
             :  (
                 <>
-                  <button onClick={() => {navigator.clipboard.writeText(text)}}>
+                  <button onClick={() => {navigator.clipboard.writeText(password)}}>
                     <svg height="18" viewBox="0 0 24 24" width="18" focusable="false"><g><rect fill="none" height="24" width="24"></rect></g><g><path d="M16,20H5V6H3v14c0,1.1,0.9,2,2,2h11V20z M20,16V4c0-1.1-0.9-2-2-2H9C7.9,2,7,2.9,7,4v12c0,1.1,0.9,2,2,2h9 C19.1,18,20,17.1,20,16z M18,16H9V4h9V16z"></path></g></svg>
                   </button>
                   <button
@@ -89,7 +115,9 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, text, name, isEditing}) 
                   >
                     Edit
                   </button>
-                  <button style={{color: 'red'}} onClick={() => dispatch(removePassword({id}))}>&times;</button>
+                  <button 
+                    style={{color: 'red'}} 
+                    onClick={() => dispatch(removePassword({id}))}>&times;</button>
                 </>
               )
         }
