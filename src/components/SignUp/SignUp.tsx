@@ -22,7 +22,7 @@ const SignUp = (): JSX.Element => {
         }));
         navigate('/');
       })
-      .catch(console.error)
+      .catch((error) => {alert(error)})
   }
 
   return isAuth ? <Navigate to='/' />

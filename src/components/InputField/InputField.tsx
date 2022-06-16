@@ -1,7 +1,6 @@
 import {InputFieldContainer} from './styledComponent/InputFieldContainer'
 import { useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
-import { useAuth } from 'hooks/useAuth';
 
 interface PasswordItemProps {
   password: string,
@@ -21,9 +20,7 @@ const InputField: React.FC<PasswordItemProps> = ({password, name, handleTextInpu
       <form 
         method='GET' 
         action='' 
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
+        onSubmit={(e) => e.preventDefault()}
       >
         <label className='pasman__field' htmlFor="name">
           Name

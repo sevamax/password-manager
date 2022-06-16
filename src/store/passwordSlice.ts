@@ -75,19 +75,19 @@ export const fetchPasswords = createAsyncThunk<Password[], string>(
         async function(document: any) {
           const {userID, id, name, password} = document;
 
-              await setDoc(doc(db, userID, id), {
-                id,
-                name,
-                password,
-                isEditing: false,
-              });
+          await setDoc(doc(db, userID, id), {
+            id,
+            name,
+            password,
+            isEditing: false,
+          });
 
-              return {
-                id,
-                name,
-                password,
-                isEditing: false
-              } as Password;
+          return {
+            id,
+            name,
+            password,
+            isEditing: false
+          } as Password;
         })
 
 
@@ -134,19 +134,6 @@ const passwordSlice = createSlice({
       .addCase(deletePassword.fulfilled, (state, action) => {
         state.list = state.list.filter(password => password.id !== action.payload);
       })
-
-    // [fetchPasswords.pending]: (state) => {
-    //   state.status = 'loading';
-    // },
-    // [fetchPasswords.fulfilled]: (state, action) => {
-    //   state.status = 'resolved';
-    //   if(action.payload) {
-    //     state.list = action.payload;
-    //   }
-    // },
-    // [fetchPasswords.rejecred]: (state) => {
-    //   state.status = 'rejecred';
-    // }
   }
 });
 

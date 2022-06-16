@@ -6,6 +6,6 @@ export const toggleShowPassword = (pasState: boolean, password: string) => {
       } 
     : {
         type: 'password',
-        password: '•••••••••'
+        password: '•••••••••',
     }
 }

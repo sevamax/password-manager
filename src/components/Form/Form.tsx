@@ -25,9 +25,7 @@ const Form: React.FC<FormProps> = ({title, handleClick}): JSX.Element => {
               id="email"
               type="email"
               value={email}
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="email"
               onFocus={() => addFocus(inputEmailWrapper)}
               onBlur={() => removeFocus(inputEmailWrapper)}           
@@ -41,19 +39,14 @@ const Form: React.FC<FormProps> = ({title, handleClick}): JSX.Element => {
               id="password"
               type="password"
               value={password}
-              onChange={(e) => {
-                setPassword(e.target.value)
-              }}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="password"
               onFocus={() => addFocus(inputPasswordWrapper)}
               onBlur={() => removeFocus(inputPasswordWrapper)}           
             />
           </div>
         </label>
-        <button
-          onClick={() => handleClick(email, password)}
-          type="submit"
-        >
+        <button onClick={() => handleClick(email, password)} type="submit">
           {title}
         </button>
       </form>

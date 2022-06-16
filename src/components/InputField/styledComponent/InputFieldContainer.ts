@@ -54,6 +54,4 @@ export const InputFieldContainer = styled.div`
   button[type="submit"]:active {
     transform: scale(0.97);
   }
-
-
 `;
