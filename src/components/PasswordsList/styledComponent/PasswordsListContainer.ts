@@ -73,7 +73,7 @@ export const PasswordsListContainer = styled.div`
   .pasman__passwrapper {
     .input-wrapper {
       @media screen and (max-width: 600px) {
-        width: calc(100%);
+        width: calc(100vw - 40px);
         max-width: initial;
         padding-left: 0;
       }
