@@ -3,11 +3,9 @@ import PasswordsList from '../../components/PasswordsList/PasswordsList';
 import InputField from '../../components/InputField/InputField';
 import Header from '../../components/Header/Header';
 import useAppDispatch from '../../hooks/useAppDispatch';
-import { addPassword, fetchPasswords } from '../../store/passwordSlice';
+import { fetchPasswords, addNewPassword } from '../../store/passwordSlice';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { db } from '../../firebase';
-import { doc, setDoc, addDoc, collection, getDocs  } from "firebase/firestore"; 
 
 const DashboardPage = () => {
   const [password, setPasswords] = useState('');
@@ -16,7 +14,9 @@ const DashboardPage = () => {
   const {isAuth, id} = useAuth();
 
   useEffect(() => {
-    dispatch(fetchPasswords(id));
+    if (id) {
+      dispatch(fetchPasswords(id));
+    }
   }, [dispatch]);
   
   return isAuth ? (
@@ -27,15 +27,9 @@ const DashboardPage = () => {
         name={name}
         handleTextInput={setPasswords}
         handleNameInput={setName}
-        handleSubmit={async () => { 
-          dispatch(addPassword({password, name}));
+        handleSubmit={() => { 
           if (password.trim() && name.trim() && id) {
-            await setDoc(doc(db, id,  new Date().toISOString()), {
-              id: new Date().toISOString(),
-              name,
-              password,
-              isEditing: false,
-            });
+            dispatch(addNewPassword({name, password, userId: id}));
             setPasswords('');
             setName('');
           }

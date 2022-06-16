@@ -1,54 +1,113 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { PasswordsState, RemovePassword, ChangeIsEdit, EditPass, AddPassword }  from '../type';
 import { db } from '../firebase';
-import { collection, getDocs  } from "firebase/firestore"; 
+import {
+  createSlice, 
+  PayloadAction, 
+  createAsyncThunk, 
+  nanoid,
+} from '@reduxjs/toolkit';
+import { 
+  Password, 
+  PasswordsState, 
+  RemovePassword, 
+  ChangeIsEdit, 
+  EditPass, 
+  PassItem }  from '../type';
+import { 
+  collection, 
+  getDocs, 
+  getDoc, 
+  deleteDoc, 
+  doc, 
+  setDoc
+} from "firebase/firestore"; 
 
-
-export const fetchPasswords: any = createAsyncThunk(
+export const fetchPasswords = createAsyncThunk<Password[], string>(
   'passwords/fetchPasswords',
-  async function(userId: string) {
-    if (userId) {
+  async function(userId) {
       const responce = await getDocs(collection(db, userId));
-      let passwordList: any[] = [];
+      
+      let passwordList: Password[] = [];
+
       responce.forEach((doc) => {
-        passwordList.push({id: doc.id, ...doc.data()});
+        const {id, name, password, isEditing} = doc.data();
+        passwordList.push({id, name, password, isEditing});
       });
-      return passwordList;
-    }
+
+    return passwordList;
   })
+
+  export const deletePassword: any = createAsyncThunk<string, {userID: string, passID: string}>(
+    'passwords/deletePassword',
+    async function(document) {
+      const {userID, passID} = document;
+
+          await deleteDoc(doc(db, userID, passID));
+
+          if (!doc(db, userID, passID)) {
+            throw new Error('Can\'t delete task. Some trouble with server.')
+          }
+
+          return passID;
+        
+    })
+
+    export const addNewPassword = createAsyncThunk<Password, PassItem>(
+      'passwords/addNewPassword',
+      async function(passItem) {
+        const {name, password, userId} = passItem;
+        const id = nanoid();
+
+        const newPassword = {
+          id,
+          name,
+          password,
+          isEditing: false,
+        }
+
+        await setDoc(doc(db, userId, id), newPassword);
+        let document = await getDoc(doc(db, userId, id));
+
+        return (await document.data()) as Password;
+      })
+
+      export const updatePassword = createAsyncThunk<Password, {userID: string, id: string, name: string, password: string}>(
+        'passwords/updatePassword',
+        async function(document: any) {
+          const {userID, id, name, password} = document;
+
+              await setDoc(doc(db, userID, id), {
+                id,
+                name,
+                password,
+                isEditing: false,
+              });
+
+              return {
+                id,
+                name,
+                password,
+                isEditing: false
+              } as Password;
+        })
+
 
 const initialState: PasswordsState = {
   list: [],
   status: null,
-  error: null,
 }
 
 const passwordSlice = createSlice({
   name: 'passwords',
   initialState,
   reducers: {
-    addPassword(state, action: PayloadAction<AddPassword>) {
-      const {password, name} = action.payload;
-      if(name.trim() && password.trim()) {
-        state.list.push({
-          id: new Date().toISOString(),
-          name,
-          password,
-          isEditing: false,
-        })
-      }
-    },
     removePassword(state, action: PayloadAction<RemovePassword>) {
-      state.list = state.list.filter(password => password.id !== action.payload.id)
+      state.list = state.list.filter(password => password.id !== action.payload.passID)
     },
     changeIsEdit(state, action: PayloadAction<ChangeIsEdit>) {
       const changedIsEditPassword = state.list.find(password => password.id === action.payload.id);
 
       if (changedIsEditPassword) {
         changedIsEditPassword.isEditing = !changedIsEditPassword.isEditing;
-      }
-      if (action.payload.tempPass && changedIsEditPassword) {
-        changedIsEditPassword.password = action.payload.tempPass;
       }
     },
     editPass(state, action: PayloadAction<EditPass>) {
@@ -60,25 +119,37 @@ const passwordSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [fetchPasswords.pending]: (state) => {
-      state.status = 'loading';
-      state.error = null;
-    },
-    [fetchPasswords.fulfilled]: (state, action) => {
-      state.status = 'resolved';
-      if(action.payload) {
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPasswords.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchPasswords.fulfilled, (state, action) => {
+        state.status = 'resolved';
         state.list = action.payload;
-      }
+      })
+      .addCase(addNewPassword.fulfilled, (state, action) => {
+        state.list.push(action.payload);
+      })
+      .addCase(deletePassword.fulfilled, (state, action) => {
+        state.list = state.list.filter(password => password.id !== action.payload);
+      })
 
-    },
-    [fetchPasswords.rejecred]: (state, action) => {
-      state.status = 'rejecred';
-      // state.list = action.payload;
-    }
+    // [fetchPasswords.pending]: (state) => {
+    //   state.status = 'loading';
+    // },
+    // [fetchPasswords.fulfilled]: (state, action) => {
+    //   state.status = 'resolved';
+    //   if(action.payload) {
+    //     state.list = action.payload;
+    //   }
+    // },
+    // [fetchPasswords.rejecred]: (state) => {
+    //   state.status = 'rejecred';
+    // }
   }
 });
 
-export const {addPassword, removePassword, changeIsEdit, editPass } = passwordSlice.actions;
+export const {removePassword, changeIsEdit, editPass } = passwordSlice.actions;
 
 export default passwordSlice.reducer;

@@ -1,11 +1,16 @@
-import { removePassword, changeIsEdit, editPass } from "../../store/passwordSlice";
+import { 
+  changeIsEdit, 
+  editPass, 
+  deletePassword,
+  updatePassword,
+  fetchPasswords,
+} from "../../store/passwordSlice";
 import useAppDispatch  from '../../hooks/useAppDispatch';
 import { useState, useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
 import { toggleShowPassword } from '../../functions/password';
-import { doc, setDoc, addDoc, collection, getDocs  } from "firebase/firestore"; 
-import { db } from '../../firebase';
 import { useAuth } from '../../hooks/useAuth';
+
 
 interface PasswordItemProps {
   id: string,
@@ -21,7 +26,6 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
   const inputPasswordEditor = useRef<HTMLInputElement | null>(null);
 
   const dispatch = useAppDispatch();
-  const tempPass = 'asdasd';
   const userID = useAuth().id;
 
   return (
@@ -40,8 +44,7 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
                     className='pasman__password' 
                     value={password}
                     ref={inputPasswordEditor}
-                    onChange={(e) => dispatch(editPass({id, newText: e.target.value}))
-                    }
+                    onChange={(e) => dispatch(editPass({id, newText: e.target.value}))}
                     onFocus={() => addFocus(inputPasswordEditorWrapper)}
                     onBlur={() => removeFocus(inputPasswordEditorWrapper)}   
                   />
@@ -51,8 +54,8 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
                 <div className="input-wrapper input-wrapper--password">
                   <input 
                     className='pasman__password' 
-                    value={password} 
-                    type={toggleShowPassword(isPassShow)} 
+                    value={toggleShowPassword(isPassShow, password).password} 
+                    type={toggleShowPassword(isPassShow, password).type} 
                     disabled
                   />
                   <button className="btn-show-password" onClick={() => setIsPassShow(!isPassShow)}>
@@ -77,23 +80,17 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
                     style={{color: 'green'}} 
                     onClick={async() => {
                       dispatch(changeIsEdit({id}))
-                        if(userID) {
-                          await setDoc(doc(db, userID, id), {
-                            id: new Date().toISOString(),
-                            name,
-                            password,
-                            isEditing: false,
-                          });
-                      }
+                      dispatch(updatePassword({userID, id, name, password}))
                     }}>
                         &#43;
                     </button>
                   <button 
                     style={{color: 'red'}} 
                     onClick={() => {
-                      dispatch(changeIsEdit({id, tempPass}))
+                      dispatch(changeIsEdit({id}));
+                      dispatch(fetchPasswords(userID));
                     }}>
-                      &times;
+                      &#8634;
                     </button>
                 </>
               )
@@ -117,7 +114,7 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
                   </button>
                   <button 
                     style={{color: 'red'}} 
-                    onClick={() => dispatch(removePassword({id}))}>&times;</button>
+                    onClick={() => dispatch(deletePassword({userID, passID: id}))}>&times;</button>
                 </>
               )
         }

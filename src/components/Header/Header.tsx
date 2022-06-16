@@ -15,9 +15,9 @@ const
       <span>{email}</span>
       <button
         onClick={() => { 
-          dispatch(removeUser())
+          dispatch(removeUser());
           passwords && passwords.map((pass) => {
-            dispatch(removePassword(pass));
+            dispatch(removePassword({passID: pass.id}));
           })
         }}
       >

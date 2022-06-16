@@ -15,6 +15,17 @@
 
 button {
   font-size: calc(10px + 2vmin);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus {
+  background-color: #f8f9fa;
+}
+
+button:active {
+  transform: scale(0.97);
 }
 
 ul {

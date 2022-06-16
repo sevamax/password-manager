@@ -57,4 +57,8 @@ export const PasswordsListContainer = styled.div`
     min-width: 120px;
   }
 
+  .loader {
+    margin-top: 100px;
+  }
+
 `;

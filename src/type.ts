@@ -8,14 +8,14 @@ export type Password = {
 export type PasswordsState = {
   list: Password[];
   status: string | null;
-  error: string | null;
 }
 
 export type RemovePassword = {
-  id: string;
+  passID: string;
 }
 
 export type AddPassword = {
+  id: string;
   name: string;
   password: string;
 }
@@ -31,7 +31,13 @@ export type EditPass = {
 }
 
 export type UserState = {
-  id: string | null;
+  id: string;
   token: string | null;
   email: string | null;
+}
+
+export type PassItem = {
+  userId: string;
+  name: string;
+  password: string;
 }

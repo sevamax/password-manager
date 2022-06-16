@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserState }  from '../type';
-import { PasswordsState, RemovePassword, ChangeIsEdit, EditPass, AddPassword }  from '../type';
 
 
 const initialState: UserState = {
-  id: null,
+  id: '',
   token: null,
   email: null,
 }
@@ -19,7 +18,7 @@ const userSlice = createSlice({
       state.token = action.payload.token;
     },
     removeUser(state) {
-      state.id = null;
+      state.id = '';
       state.email = null;
       state.token = null;
     },
