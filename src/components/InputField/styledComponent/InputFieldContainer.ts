@@ -18,15 +18,15 @@ export const InputFieldContainer = styled.div`
     @media screen and (max-width: 600px) {
       flex-direction: column;
       align-items: flex-start;
-
     }
 
     .input-wrapper {
-      width: 100%;
-      max-width: 100%;
+      /* width: 100%;
+      max-width: 100%; */
 
       @media screen and (max-width: 600px) {
         width: calc(100% - 20px);
+        max-width: 100%;
         margin-top: 5px;
       }
     }
