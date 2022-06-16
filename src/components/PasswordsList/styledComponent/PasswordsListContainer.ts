@@ -7,6 +7,10 @@ export const PasswordsListContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
+
+    @media screen and (max-width: 600px) {
+      padding-left: 0;
+    }
   }
 
   input:checked + .pasman__name {
@@ -36,9 +40,14 @@ export const PasswordsListContainer = styled.div`
   .pasman__item {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
     justify-content: space-between;
     max-width: 1100px;
     align-items: center;
+
+    @media screen and (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
   }
 
   .pasman__text {
@@ -59,6 +68,16 @@ export const PasswordsListContainer = styled.div`
 
   .loader {
     margin-top: 100px;
+  }
+
+  .pasman__passwrapper {
+    .input-wrapper {
+      @media screen and (max-width: 600px) {
+        width: calc(100%);
+        max-width: initial;
+        padding-left: 0;
+      }
+    }
   }
 
 `;

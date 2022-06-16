@@ -14,6 +14,22 @@ export const InputFieldContainer = styled.div`
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+
+    @media screen and (max-width: 600px) {
+      flex-direction: column;
+      align-items: flex-start;
+
+    }
+
+    .input-wrapper {
+      width: 100%;
+      max-width: 100%;
+
+      @media screen and (max-width: 600px) {
+        width: calc(100% - 20px);
+        margin-top: 5px;
+      }
+    }
   }
 
   .pasman__field + .pasman__field {
@@ -24,6 +40,10 @@ export const InputFieldContainer = styled.div`
     margin-top: 20px;
     background-color: transparent;
     cursor: pointer;
+
+    @media screen and (max-width: 600px) {
+      height: 40px;
+    }
   }
   button[type="submit"]:hover,
   button[type="submit"]:focus {
