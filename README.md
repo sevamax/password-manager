@@ -1,3 +1,3 @@
 # password-manager
 
-Password manager app
+Password manager app uses Vite
