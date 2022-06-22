@@ -1,11 +1,10 @@
-import { Form } from "../Form/Form";
+import { Form } from '../Form/Form';
 import useAppDispatch from '../../hooks/useAppDispatch';
-import {setUser} from '../../store/userSlice';
+import { setUser } from '../../store/userSlice';
 import { signInWithEmailAndPassword} from 'firebase/auth';
-import { auth } from "../../firebase";
-import { useNavigate  } from "react-router-dom";
+import { auth } from '../../firebase';
+import { useNavigate, Navigate  } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Navigate } from 'react-router-dom';
 
 const Login = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -17,7 +16,7 @@ const Login = (): JSX.Element => {
     .then(({user}) => {
       dispatch(setUser({
         id: user.uid,
-        email: user.email,
+        email: user.email || '',
         token: user.refreshToken,
       }));
       navigate('/');

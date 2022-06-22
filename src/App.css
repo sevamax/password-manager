@@ -17,6 +17,9 @@ button {
   font-size: calc(10px + 2vmin);
   background-color: transparent;
   cursor: pointer;
+  padding: 1px 6px;
+  border: 2px solid #000000;
+  color: #000000;
 }
 
 button:hover,

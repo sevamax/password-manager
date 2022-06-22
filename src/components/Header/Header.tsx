@@ -1,8 +1,8 @@
-import HeaderContainer from "./styledComponents";
-import useAppSelector from "../../hooks/useAppSelector";
-import useAppDispatch from "../../hooks/useAppDispatch";
-import { removeUser } from "../../store/userSlice";
-import { removePassword } from "../../store/passwordSlice";
+import HeaderContainer from './styledComponents';
+import useAppSelector from '../../hooks/useAppSelector';
+import useAppDispatch from '../../hooks/useAppDispatch';
+import { removeUser } from '../../store/userSlice';
+import { removePassword } from '../../store/passwordSlice';
 
 const
  Header = (): JSX.Element => {

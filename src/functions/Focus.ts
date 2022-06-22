@@ -1,4 +1,4 @@
-import { MutableRefObject } from "react";
+import { MutableRefObject } from 'react';
 
 export const addFocus = (el: MutableRefObject<HTMLDivElement | null>): void => {
   if (el.current) {

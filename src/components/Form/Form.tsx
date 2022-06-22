@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
 import {InputFieldContainer} from '../InputField/styledComponent/InputFieldContainer';
 

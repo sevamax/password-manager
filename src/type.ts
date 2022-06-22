@@ -32,8 +32,8 @@ export type EditPass = {
 
 export type UserState = {
   id: string;
-  token: string | null;
-  email: string | null;
+  token: string;
+  email: string;
 }
 
 export type PassItem = {

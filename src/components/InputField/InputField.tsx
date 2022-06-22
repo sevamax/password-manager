@@ -1,4 +1,4 @@
-import {InputFieldContainer} from './styledComponent/InputFieldContainer'
+import { InputFieldContainer } from './styledComponent/InputFieldContainer'
 import { useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
 

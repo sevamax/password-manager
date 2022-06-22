@@ -4,22 +4,15 @@ import {
   deletePassword,
   updatePassword,
   fetchPasswords,
-} from "../../store/passwordSlice";
+} from '../../store/passwordSlice';
 import useAppDispatch  from '../../hooks/useAppDispatch';
 import { useState, useRef } from 'react';
 import { addFocus, removeFocus } from '../../functions/focus';
 import { toggleShowPassword } from '../../functions/password';
 import { useAuth } from '../../hooks/useAuth';
+import { Password } from '../../type';
 
-
-interface PasswordItemProps {
-  id: string,
-  password: string,
-  name: string,
-  isEditing: boolean,
-};
-
-const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditing}) => {
+const PasswordItem: React.FC<Password> = ({id, password, name, isEditing}) => {
   const [isPassShow, setIsPassShow] = useState(false);
 
   const inputPasswordEditorWrapper = useRef<HTMLDivElement | null>(null);
@@ -96,18 +89,23 @@ const PasswordItem: React.FC<PasswordItemProps> = ({id, password, name, isEditin
               )
             :  (
                 <>
-                  <button onClick={() => {navigator.clipboard.writeText(password)}}>
+                  <button 
+                    onClick={async() => {
+                      await navigator.clipboard.writeText(password);
+                    }}
+                  >
                     <svg height="18" viewBox="0 0 24 24" width="18" focusable="false"><g><rect fill="none" height="24" width="24"></rect></g><g><path d="M16,20H5V6H3v14c0,1.1,0.9,2,2,2h11V20z M20,16V4c0-1.1-0.9-2-2-2H9C7.9,2,7,2.9,7,4v12c0,1.1,0.9,2,2,2h9 C19.1,18,20,17.1,20,16z M18,16H9V4h9V16z"></path></g></svg>
                   </button>
                   <button
                     style={{color: 'blue'}}
                     onClick={() => {
-                      dispatch(changeIsEdit({id}));
-                      setTimeout(() => {
-                        if(inputPasswordEditor.current) {
-                          inputPasswordEditor.current.focus();
-                        }
-                      }, 0)
+                      new Promise(function(resolve, reject) {
+                        dispatch(changeIsEdit({id}));
+                        resolve('');
+                      })
+                      .then(() => {
+                        inputPasswordEditor.current && inputPasswordEditor.current.focus();
+                      })
                    }}
                   >
                     Edit

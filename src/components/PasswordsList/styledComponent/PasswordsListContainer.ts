@@ -7,9 +7,10 @@ export const PasswordsListContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
-
+    margin-top: 75px;
     @media screen and (max-width: 600px) {
       padding-left: 0;
+      margin-top: 35px;
     }
   }
 
