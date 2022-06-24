@@ -1,7 +1,7 @@
-import useAppSelector  from './useAppSelector';
+import useAppSelector from './useAppSelector';
 
-export function useAuth() {
-  const {id, email, token} = useAppSelector(state => state.user)
+function useAuth() {
+  const { id, email, token } = useAppSelector((state) => state.user);
 
   return {
     isAuth: !!email,
@@ -10,3 +10,5 @@ export function useAuth() {
     id,
   };
 }
+
+export default useAuth;

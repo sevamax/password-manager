@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserState }  from '../type';
-
+import { UserState } from '../type';
 
 const initialState: UserState = {
   id: '',
   token: '',
   email: '',
-}
+};
 
 const userSlice = createSlice({
   name: 'user',
@@ -22,7 +21,7 @@ const userSlice = createSlice({
       state.email = '';
       state.token = '';
     },
-  }
+  },
 });
 
 export const { setUser, removeUser } = userSlice.actions;

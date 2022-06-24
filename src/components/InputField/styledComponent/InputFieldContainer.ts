@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const InputFieldContainer = styled.div`
+const InputFieldContainer = styled.div`
 
   form {
       text-align: left;
@@ -55,3 +55,5 @@ export const InputFieldContainer = styled.div`
     transform: scale(0.97);
   }
 `;
+
+export default InputFieldContainer;

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const PasswordsListContainer = styled.div`
+const PasswordsListContainer = styled.div`
   margin-top: 50px;
 
   .password-list {
@@ -82,3 +82,5 @@ export const PasswordsListContainer = styled.div`
   }
 
 `;
+
+export default PasswordsListContainer;

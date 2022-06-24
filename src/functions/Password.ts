@@ -1,11 +1,11 @@
-export const toggleShowPassword = (pasState: boolean, password: string) => {
-  return pasState 
-    ? { 
-        type: 'text', 
-        password, 
-      } 
-    : {
-        type: 'password',
-        password: '•••••••••',
-    }
-}
+const toggleShowPassword = (pasState: boolean, password: string) => (pasState
+  ? {
+    type: 'text',
+    password,
+  }
+  : {
+    type: 'password',
+    password: '•••••••••',
+  });
+
+export default toggleShowPassword;

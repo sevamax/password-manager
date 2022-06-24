@@ -1,6 +1,4 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import passwordReducer from './passwordSlice';
-import userRedicer from './userSlice';
 import {
   persistStore,
   persistReducer,
@@ -10,8 +8,10 @@ import {
   PERSIST,
   PURGE,
   REGISTER,
-} from 'redux-persist'
+} from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import passwordReducer from './passwordSlice';
+import userRedicer from './userSlice';
 
 const rootReducer = combineReducers({
   user: userRedicer,
@@ -21,21 +21,19 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'user',
   storage,
-  blacklist: ['passwords']
-}
+  blacklist: ['passwords'],
+};
 
-const persistedReducer = persistReducer(persistConfig, rootReducer);  
-
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
-})
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+    },
+  }),
+});
 
 export const persister = persistStore(store);
 
